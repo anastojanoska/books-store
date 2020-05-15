@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,9 +25,8 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category saveCategory(@Valid @RequestBody Category category){
-        this.categoryService.save(category);
-        return category;
+    public Category saveCategory(@Valid Category category, BindingResult bindingResult) {
+        return this.categoryService.save(category);
     }
 
     @PostMapping("/{id}/delete")
@@ -33,8 +34,9 @@ public class CategoryController {
         this.categoryService.deleteById(id);
     }
 
-//    @PostMapping("/{id}/edit")
-//    public Category editById(@PathVariable Long id, @RequestBody Category category){
-//        return this.categoryService.editById(id, category);
-//    }
+    @PostMapping("/{id}/edit")
+    public Category editById(@PathVariable Long id, @Valid Category category, BindingResult bindingResult){
+        return this.categoryService.editById(id, category);
+    }
+
 }
