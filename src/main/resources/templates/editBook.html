@@ -56,6 +56,7 @@
     <h3 class="text-secondary">Edit book</h3>
     <form method="post"
           action="/books"
+          enctype="multipart/form-data"
           th:object="${book}"
           class="w-25">
         <input type="hidden" name="id"
@@ -94,15 +95,16 @@
                         name="category"></option>
             </select></p>
         <p>Picture:
-            <input type="text" name="multipartFile"
-                   th:name="multipartFile"
-                   th:field="*{multipartFile}"
+            <input type="file" name="base64image"
+                   th:name="base64image"
+                   th:field="*{base64image}"
                    class="form-control"></p>
         <button class="btn btn-primary"><a th:href="@{/books}" class="text-white">Back</a></button>
         <button type="submit" class="btn btn-success">Edit book</button>
     </form>
 
 </div>
+<br>
 <footer class="py-4 bg-dark fixed-bottom">
     <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Ana Stojanoska 2020</p>

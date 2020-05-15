@@ -44,23 +44,13 @@ public class BookController {
     }
 
     @PostMapping
-    public ModelAndView saveBook(@Valid Book book, BindingResult bindingResult, Model model){
+    public ModelAndView saveBook(@Valid Book book, BindingResult bindingResult, Model model, @RequestParam MultipartFile base64image) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
-        bookService.save(book);
+        bookService.save(book, base64image);
         modelAndView.addObject("books", bookService.findAll());
         modelAndView.setViewName("books");
         return modelAndView;
     }
-
-//    @PostMapping
-//    public ModelAndView saveBook(@Valid Book book, BindingResult bindingResult, @RequestParam MultipartFile image, Model model) throws IOException {
-//        ModelAndView modelAndView = new ModelAndView();
-//        bookService.saveBook(book, image);
-//        modelAndView.addObject("books", bookService.findAll());
-//        modelAndView.addObject("image", image);
-//        modelAndView.setViewName("books");
-//        return modelAndView;
-//    }
 
     @PostMapping("/{id}/delete")
     public String deleteBook(@PathVariable Long id){

@@ -21,19 +21,19 @@ public class BookRepositoryImpl implements BookRepository {
         this.counter = 1L;
 
         Long id = generateId();
-        Book book1 = new Book(id, "Harry Potter", 5, new Category(1L, "Fantasy","description1"), "picture1");
+        Book book1 = new Book(id, "Harry Potter", 5, new Category(1L, "Fantasy","description1"));
         books.put(id, book1);
 
         id = generateId();
-        Book book2 = new Book(id, "The Great Gatsby", 3, new Category(1L, "Romance","description2"), "picture2");
+        Book book2 = new Book(id, "The Great Gatsby", 3, new Category(1L, "Romance","description2"));
         books.put(id, book2);
 
         id = generateId();
-        Book book3 = new Book(id, "Life of Pi", 4, new Category(1L, "Adventure","description3"), "picture3");
+        Book book3 = new Book(id, "Life of Pi", 4, new Category(1L, "Adventure","description3"));
         books.put(id, book3);
 
         id = generateId();
-        Book book4 = new Book(id, "Narnia", 4, new Category(1L, "Fantasy","description4"), "picture4");
+        Book book4 = new Book(id, "Narnia", 4, new Category(1L, "Fantasy","description4"));
         books.put(id, book4);
     }
 

@@ -10,8 +10,7 @@ public interface BookService {
 
     List<Book> findAll();
     Book findById(Long id);
-    void save(Book book);
+    void save(Book book, MultipartFile multipartFile) throws IOException;
     void deleteById(Long id);
-//    Book saveBook(Book book, MultipartFile image) throws IOException;
 
 }

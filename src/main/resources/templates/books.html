@@ -8,6 +8,12 @@
     <script type="text/javascript" src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 
 </head>
+<style>
+    img{
+        width: 70px;
+        height: 70px;
+    }
+</style>
 <body class="bg-light">
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
@@ -53,12 +59,13 @@
 </nav>
 <div class="container bg-light">
     <br>
-    <h1 class="text-center text-danger">List of all books!</h1>
+    <h1 class="text-center text-success">List of all books!</h1>
     <br>
     <table class="table">
         <thead class="thead-light">
             <tr>
                 <th>Id</th>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Samples</th>
                 <th>Category</th>
@@ -69,6 +76,7 @@
         <tbody th:each="book : ${books}">
             <tr>
                 <td th:text="${book.getId()}"></td>
+                <td><img th:src="${book.getBase64image()}"></td>
                 <td th:text="${book.getName()}"></td>
                 <td th:text="${book.getSample()}"></td>
                 <td th:text="${book.getCategory().getName()}"></td>
@@ -85,7 +93,8 @@
     </table>
     <a class="btn btn-warning" th:href="@{/books/new}">Add new book</a>
 </div>
-<footer class="py-4 bg-dark fixed-bottom">
+<br>
+<footer class="py-4 bg-dark">
     <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Ana Stojanoska 2020</p>
     </div>

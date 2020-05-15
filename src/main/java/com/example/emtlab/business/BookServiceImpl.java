@@ -33,24 +33,16 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void save(Book book) {
-         this.bookRepository.save(book);
+    public void save(Book book, MultipartFile image) throws IOException {
+
+        if(image != null) {
+            byte [] imageBytes = image.getBytes();
+            String base64image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(imageBytes));
+            book.setBase64image(base64image);
+        }
+
+        this.bookRepository.save(book);
     }
-
-//    @Override
-//    public Book saveBook(Book book, MultipartFile image) throws IOException {
-//        Category category = this.categoryService.findById(book.getCategory().getId());
-//        book.setCategory(category);
-//        if (image != null && !image.getName().isEmpty()) {
-//            byte[] bytes = image.getBytes();
-//            String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
-//            book.setImage(image);
-//            book.setImageBase64(base64Image);
-//        }
-//        this.bookRepository.save(book);
-//        return book;
-//    }
-
 
     @Override
     public void deleteById(Long id) {
