@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,6 +47,15 @@ public class BookController {
     @PostMapping
     public ModelAndView saveBook(@Valid Book book, BindingResult bindingResult, Model model, @RequestParam MultipartFile base64image) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
+        if (bindingResult.getAllErrors().size() > 1){
+            modelAndView.addObject("errors", bindingResult.getAllErrors().subList(1, bindingResult.getAllErrors().size()));
+            if(bookService.findById(book.getId())!= null)
+                modelAndView.setViewName("editBook");
+            else
+                modelAndView.setViewName("newBook");
+
+            return modelAndView;
+        }
         bookService.save(book, base64image);
         modelAndView.addObject("books", bookService.findAll());
         modelAndView.setViewName("books");
@@ -55,9 +65,6 @@ public class BookController {
     @PostMapping("/{id}/delete")
     public String deleteBook(@PathVariable Long id){
         bookService.deleteById(id);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("books", bookService.findAll());
-//        modelAndView.setViewName("books");
         return "redirect:/books";
     }
 

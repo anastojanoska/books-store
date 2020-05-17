@@ -1,18 +1,20 @@
 package com.example.emtlab.model;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 public class Book {
 
     private Long id;
+    @NotNull
+    @Size(min = 3, message = "Name must be > 3")
     private String name;
     @NotNull
-    @Min(value = 1, message = "must be >0")
+    @Min(value = 1, message = "Sample must be > 0")
     private Integer sample;
     private Category category;
     private String base64image;

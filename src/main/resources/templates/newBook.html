@@ -54,6 +54,12 @@
 <div class="container bg-light">
     <br>
     <h3 class="text-secondary">Add new book</h3>
+    <br>
+    <div >
+        <ul th:each="error : ${errors}">
+            <li th:text="${error.getDefaultMessage()}" class="text-danger"></li>
+        </ul>
+    </div>
     <form method="post"
           action="/books"
           enctype="multipart/form-data"
@@ -67,7 +73,8 @@
             <input type="text" name="name"
                    th:name="name"
                    th:field="*{name}"
-                   class="form-control"></p>
+                   class="form-control"
+                    required></p>
         <p>Sample:
             <input type="text" name="sample"
                    th:name="sample"
