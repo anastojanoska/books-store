@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -35,21 +33,24 @@ public class BookController {
     }
 
     @GetMapping("/new")
-    public String addBook(Model model){
-//        modelAndView.addObject("categories", categoryService.findAll());
+    public ModelAndView addBook(Model model){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("categories", categoryService.findAll());
         Long id = bookService.findAll().size()+1L;
-        model.addAttribute("book", new Book(id));
-//        model.addAttribute("bookId", id);
+        modelAndView.addObject("book", new Book(id));
+        modelAndView.setViewName("newBook");
 
-        return "newBook";
+        return modelAndView;
     }
 
     @PostMapping
     public ModelAndView saveBook(@Valid Book book, BindingResult bindingResult, Model model, @RequestParam MultipartFile base64image) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("categories", categoryService.findAll());
+        int size = bookService.findAll().size();
         if (bindingResult.getAllErrors().size() > 1){
             modelAndView.addObject("errors", bindingResult.getAllErrors().subList(1, bindingResult.getAllErrors().size()));
-            if(bookService.findById(book.getId())!= null)
+            if(book.getId() <= size)
                 modelAndView.setViewName("editBook");
             else
                 modelAndView.setViewName("newBook");
@@ -69,9 +70,10 @@ public class BookController {
     }
 
     @PostMapping("/{id}/edit")
-    public ModelAndView editBook(@PathVariable Long id){
+    public ModelAndView editBook(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("book", bookService.findById(id));
+        modelAndView.addObject("categories", categoryService.findAll());
+        modelAndView.addObject("book", bookService.findById(id).get());
         modelAndView.setViewName("editBook");
 
         return modelAndView;

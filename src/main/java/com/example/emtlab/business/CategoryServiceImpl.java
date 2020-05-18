@@ -1,19 +1,26 @@
 package com.example.emtlab.business;
 
+import com.example.emtlab.model.Book;
 import com.example.emtlab.model.Category;
 import com.example.emtlab.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
 
+    @Autowired
+    private BookService bookService;
+
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
 
     @Override
     public List<Category> findAll() {
@@ -21,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public Category findById(Long id) {
+    public Optional<Category> findById(Long id) {
         return this.categoryRepository.findById(id);
     }
 
@@ -32,11 +39,19 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void deleteById(Long id) {
+        for(Book book:bookService.findAll()){
+            if(book.getCategory().getId().equals(id)) {
+                book.setCategory(null);
+            }
+        }
         this.categoryRepository.deleteById(id);
     }
 
     @Override
     public Category editById(Long id, Category category) {
-        return categoryRepository.editById(id, category);
+         Category cat = categoryRepository.getOne(id);
+         cat = category;
+         categoryRepository.save(cat);
+         return cat;
     }
 }

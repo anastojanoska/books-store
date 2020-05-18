@@ -1,11 +1,16 @@
 package com.example.emtlab.model;
 
 import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Entity
 public class Category {
 
+    @Id
     private Long id;
     @NotNull
     private String name;

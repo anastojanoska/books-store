@@ -79,7 +79,7 @@
                 <td><img th:src="${book.getBase64image()}"></td>
                 <td th:text="${book.getName()}"></td>
                 <td th:text="${book.getSample()}"></td>
-                <td th:text="${book.getCategory().getName()}"></td>
+                <td th:text="${book.getCategory()}  ? ${book.getCategory().getName()}: 'unknown'"></td>
                 <td><form th:action="@{/books/{id}/edit(id=${book.getId()})}" th:method="post">
                         <button class="btn btn-primary">Edit</button>
                     </form>
