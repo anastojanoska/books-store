@@ -81,26 +81,35 @@
                    class="form-control"
                    required></p>
         <p>Category:
-            <select name="category"
-                    th:name="category"
-                    class="form-control">
-                <option
-                        th:value="Adventure"
-                        th:text="Adventure"
-                        name="category"></option>
-                <option
-                        th:value="Action"
-                        th:text="Action"
-                        name="category"></option>
-                <option
-                        th:value="Fantasy"
-                        th:text="Fantasy"
-                        name="category"></option>
-                <option
-                        th:value="Mystery"
-                        th:text="Mystery"
-                        name="category"></option>
-            </select></p>
+            <select name="category.id" class="form-control">
+                <option th:each="category: ${categories}"
+                        th:value="${category.getId()}"
+                        th:text="${category.getName()}"
+                        name="category.name"
+                        th:selected="${ book.getCategory() != null && book.getCategory().getId()  == category.getId()}">
+                </option>
+            </select>
+<!--            <select name="category"-->
+<!--                    th:name="category"-->
+<!--                    class="form-control">-->
+<!--                <option-->
+<!--                        th:value="Adventure"-->
+<!--                        th:text="Adventure"-->
+<!--                        name="category"></option>-->
+<!--                <option-->
+<!--                        th:value="Action"-->
+<!--                        th:text="Action"-->
+<!--                        name="category"></option>-->
+<!--                <option-->
+<!--                        th:value="Fantasy"-->
+<!--                        th:text="Fantasy"-->
+<!--                        name="category"></option>-->
+<!--                <option-->
+<!--                        th:value="Mystery"-->
+<!--                        th:text="Mystery"-->
+<!--                        name="category"></option>-->
+<!--            </select>-->
+        </p>
         <p>Picture:
             <input type="file" name="base64image"
                    th:name="base64image"
