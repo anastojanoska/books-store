@@ -1,5 +1,6 @@
 package com.example.emtlab.business;
 
+import com.example.emtlab.exceptions.CategoryNotFoundException;
 import com.example.emtlab.model.Book;
 import com.example.emtlab.model.Category;
 import com.example.emtlab.repository.CategoryRepository;
@@ -7,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
@@ -28,8 +29,9 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public Optional<Category> findById(Long id) {
-        return this.categoryRepository.findById(id);
+    public Category findById(Long id) {
+        return this.categoryRepository.findById(id)
+                .orElseThrow(()->new CategoryNotFoundException(id));
     }
 
     @Override

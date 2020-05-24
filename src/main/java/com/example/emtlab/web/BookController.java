@@ -36,8 +36,7 @@ public class BookController {
     public ModelAndView addBook(Model model){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("categories", categoryService.findAll());
-        Long id = bookService.findAll().size()+1L;
-        modelAndView.addObject("book", new Book(id));
+        modelAndView.addObject("book", new Book());
         modelAndView.setViewName("newBook");
 
         return modelAndView;
@@ -50,7 +49,7 @@ public class BookController {
         int size = bookService.findAll().size();
         if (bindingResult.getAllErrors().size() > 1){
             modelAndView.addObject("errors", bindingResult.getAllErrors().subList(1, bindingResult.getAllErrors().size()));
-            if(book.getId() <= size)
+            if(book.getId() != null)
                 modelAndView.setViewName("editBook");
             else
                 modelAndView.setViewName("newBook");
@@ -73,7 +72,7 @@ public class BookController {
     public ModelAndView editBook(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("categories", categoryService.findAll());
-        modelAndView.addObject("book", bookService.findById(id).get());
+        modelAndView.addObject("book", bookService.findById(id));
         modelAndView.setViewName("editBook");
 
         return modelAndView;

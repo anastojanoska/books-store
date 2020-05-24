@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @Entity
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -22,26 +23,11 @@ public class Book {
     @NotNull
     @Min(value = 1, message = "Sample must be > 0")
     private Integer sample;
+    private Integer price;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Category category;
     @Lob
     private String base64image;
-
-
-    public Book(){}
-
-    public Book(Long id) {
-        this.id = id;
-    }
-
-
-
-    public Book(Long id, String name, @NotNull @Min(value = 1, message = "must be >0") Integer sample, Category category) {
-        this.id = id;
-        this.name = name;
-        this.sample = sample;
-        this.category = category;
-    }
 
 }

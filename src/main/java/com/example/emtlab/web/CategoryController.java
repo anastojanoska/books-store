@@ -3,13 +3,11 @@ package com.example.emtlab.web;
 import com.example.emtlab.business.CategoryService;
 import com.example.emtlab.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,6 +21,12 @@ public class CategoryController {
     public List<Category> getAllCategories(){
         return this.categoryService.findAll();
     }
+
+    @GetMapping("/{id}")
+    public Category findById(@PathVariable Long id) {
+        return this.categoryService.findById(id);
+    }
+
 
     @PostMapping
     public Category saveCategory(@Valid Category category, BindingResult bindingResult) {

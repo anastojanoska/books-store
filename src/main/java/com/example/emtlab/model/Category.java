@@ -2,30 +2,20 @@ package com.example.emtlab.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @Entity
 public class Category {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @Size(min = 2, message = "Name should be larger than 2 characters")
     private String name;
     private String description;
-
-    public Category(){}
-
-    public Category(@NotNull String name){
-        this.name = name;
-    }
-
-    public Category(Long id, @NotNull String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
 
 }
