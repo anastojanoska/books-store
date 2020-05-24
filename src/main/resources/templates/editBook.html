@@ -29,7 +29,7 @@
                     <a class="nav-link" href="/books">Books</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Cart <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/api/cart-items">Cart <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
 
@@ -43,7 +43,7 @@
                         </button>
                     </div>
                 </div>
-                <a class="btn btn-success btn-sm ml-3" href="cart.html">
+                <a class="btn btn-success btn-sm ml-3" href="/api/cart-items">
                     <i class="fa fa-shopping-cart"></i> Cart
                     <span class="badge badge-light">3</span>
                 </a>
@@ -89,27 +89,13 @@
                         th:selected="${ book.getCategory() != null && book.getCategory().getId()  == category.getId()}">
                 </option>
             </select>
-<!--            <select name="category"-->
-<!--                    th:name="category"-->
-<!--                    class="form-control">-->
-<!--                <option-->
-<!--                        th:value="Adventure"-->
-<!--                        th:text="Adventure"-->
-<!--                        name="category"></option>-->
-<!--                <option-->
-<!--                        th:value="Action"-->
-<!--                        th:text="Action"-->
-<!--                        name="category"></option>-->
-<!--                <option-->
-<!--                        th:value="Fantasy"-->
-<!--                        th:text="Fantasy"-->
-<!--                        name="category"></option>-->
-<!--                <option-->
-<!--                        th:value="Mystery"-->
-<!--                        th:text="Mystery"-->
-<!--                        name="category"></option>-->
-<!--            </select>-->
         </p>
+        <p>Price:
+            <input type="text" name="price"
+                   th:name="price"
+                   th:field="*{price}"
+                   th:value="*{price}"
+                   class="form-control"></p>
         <p>Picture:
             <input type="file" name="base64image"
                    th:name="base64image"

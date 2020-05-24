@@ -35,7 +35,7 @@
                     <a class="nav-link" href="/books">Books</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Cart <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/api/cart-items">Cart <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
 
@@ -49,7 +49,7 @@
                         </button>
                     </div>
                 </div>
-                <a class="btn btn-success btn-sm ml-3" href="cart.html">
+                <a class="btn btn-success btn-sm ml-3" href="/api/cart-items">
                     <i class="fa fa-shopping-cart"></i> Cart
                     <span class="badge badge-light">3</span>
                 </a>
@@ -64,22 +64,22 @@
     <table class="table">
         <thead class="thead-light">
             <tr>
-                <th>Id</th>
                 <th>Image</th>
                 <th>Name</th>
                 <th>Samples</th>
                 <th>Category</th>
+                <th>Price</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
         <tbody th:each="book : ${books}">
             <tr>
-                <td th:text="${book.getId()}"></td>
                 <td><img th:src="${book.getBase64image()}"></td>
                 <td th:text="${book.getName()}"></td>
                 <td th:text="${book.getSample()}"></td>
                 <td th:text="${book.getCategory()}  ? ${book.getCategory().getName()}: 'unknown'"></td>
+                <td th:text="${book.getPrice()}"></td>
                 <td><form th:action="@{/books/{id}/edit(id=${book.getId()})}" th:method="post">
                         <button class="btn btn-primary">Edit</button>
                     </form>
