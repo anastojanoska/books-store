@@ -64,7 +64,10 @@ public class CartItemServiceImpl implements CartItemService{
     @Override
     public ShoppingCart removeCartItemFromShoppingCart(String userId, Long bookId) {
         ShoppingCart shoppingCart = this.getActiveShoppingCartOrCreateNew(userId);
-        List<CartItem> cartItems = this.cartItemRepository.findAll();
+        List<CartItem> cartItems = this.findAllByShoppingCartId(shoppingCart.getId());
+//        cartItems.stream().filter(cartItem ->
+//                        cartItem.getShoppingCart().getId().equals(shoppingCart.getId()))
+//                    .collect(Collectors.toList());
 
         for(CartItem item : cartItems){
             if(item.getBook().getId().equals(bookId))
