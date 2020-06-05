@@ -28,7 +28,8 @@ public class ShoppingCartRestController {
 
     @PostMapping("/checkout")
     public ShoppingCart checkoutActiveShoppingCart(){
-        return this.shoppingCartService.checkoutActiveShoppingCart(authService.getCurrentUserId());
+//        return this.shoppingCartService.checkoutActiveShoppingCart(authService.getCurrentUserId());
+    return null;
     }
 
 

@@ -3,12 +3,12 @@ package com.example.emtlab.business;
 import com.example.emtlab.exceptions.BookOutOfStockException;
 import com.example.emtlab.exceptions.ShoppingCartAlreadyExists;
 import com.example.emtlab.exceptions.ShoppingCartIsNotActiveException;
-import com.example.emtlab.model.Book;
-import com.example.emtlab.model.CartItem;
-import com.example.emtlab.model.ShoppingCart;
-import com.example.emtlab.model.User;
+import com.example.emtlab.exceptions.TransactionFailedException;
+import com.example.emtlab.model.*;
 import com.example.emtlab.model.enumeration.CartStatus;
 import com.example.emtlab.repository.ShoppingCartRepository;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
 import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +30,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
     private BookService bookService;
     @Autowired
     private CartItemService cartItemService;
+    @Autowired
+    private PaymentService paymentService;
+
+    @Override
+    @Transactional
+    public ShoppingCart findActiveShoppingCartByUsername(String userId) {
+        return this.shoppingCartRepository.findByUserUsernameAndStatus(userId, CartStatus.CREATED)
+                .orElseThrow(()->new ShoppingCartIsNotActiveException(userId));
+    }
 
     @Override
     public ShoppingCart create(String userId) {
         User user = userService.findById(userId);
         if(this.shoppingCartRepository.existsByUserUsernameAndStatus(userId, CartStatus.CREATED))
             throw new ShoppingCartAlreadyExists();
+
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
 
@@ -79,9 +89,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
 
     @Override
     public ShoppingCart cancelActiveShoppingCart(String userId) {
-        ShoppingCart shoppingCart = this.shoppingCartRepository.findByUserUsernameAndStatus(userId, CartStatus.CREATED);
-        if(shoppingCart == null)
-            throw new ShoppingCartIsNotActiveException();
+        ShoppingCart shoppingCart = this.shoppingCartRepository.findByUserUsernameAndStatus(userId, CartStatus.CREATED)
+                .orElseThrow(() -> new ShoppingCartIsNotActiveException(userId));
+
         shoppingCart.setStatus(CartStatus.CANCELED);
         shoppingCart.setTimeCanceledOrFinished(LocalDateTime.now());
         return this.shoppingCartRepository.save(shoppingCart);
@@ -89,10 +99,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
 
     @Override
     @Transactional
-    public ShoppingCart checkoutActiveShoppingCart(String userId) {
-        ShoppingCart shoppingCart = this.shoppingCartRepository.findByUserUsernameAndStatus(userId, CartStatus.CREATED);
-        if(shoppingCart == null)
-            throw new ShoppingCartIsNotActiveException();
+    public ShoppingCart checkoutActiveShoppingCart(String userId, ChargeRequest chargeRequest) {
+        ShoppingCart shoppingCart = this.shoppingCartRepository.findByUserUsernameAndStatus(userId, CartStatus.CREATED)
+                .orElseThrow(() -> new ShoppingCartIsNotActiveException(userId));
 
 //        List<Book> books = shoppingCart.getBooks();
 //        float price = 0;
@@ -110,9 +119,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
         List<CartItem> cartItems = cartItemService.findAllByShoppingCartId(shoppingCart.getId());
         float price = 0;
         for(CartItem item : cartItems) {
-            price+= item.getBook().getPrice();
-            item.getBook().setSample(item.getBook().getSample()-1);
+            if (item.getBook().getSample() <= 0)
+                throw new BookOutOfStockException(item.getBook().getId());
+            price += item.getBook().getPrice();
+            item.getBook().setSample(item.getBook().getSample() - 1);
         }
+            try {
+                Charge charge = this.paymentService.pay(chargeRequest);
+            }catch (StripeException ex){
+                throw new TransactionFailedException(userId, ex.getMessage());
+            }
 
         shoppingCart.setStatus(CartStatus.FINISHED);
         shoppingCart.setTimeCanceledOrFinished(LocalDateTime.now());

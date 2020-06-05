@@ -51,7 +51,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category editById(Long id, Category category) {
-         Category cat = categoryRepository.getOne(id);
+        //TODO: da se proveri uste ednas
+
+         Category cat = categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException(id));
          cat = category;
          categoryRepository.save(cat);
          return cat;
