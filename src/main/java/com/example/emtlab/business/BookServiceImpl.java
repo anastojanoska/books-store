@@ -22,19 +22,26 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public List<Book> findAllByCategoryId(Long categoryId) {
+        return this.bookRepository.findAllByCategoryId(categoryId);
+    }
+
+    @Override
     public List<Book> findAll() {
         return this.bookRepository.findAll();
     }
 
     @Override
-    public Book findById(Long id)  {
+    public Book findById(Long id) throws BookNotFoundException {
         return this.bookRepository.findById(id)
                 .orElseThrow(()-> new BookNotFoundException(id));
     }
 
     @Override
     public void save(Book book, MultipartFile image) throws IOException {
-
+        //not sure if needed
+//        Category category = this.categoryService.findById(book.getCategory().getId());
+//        book.setCategory(category);
         if(image != null) {
             byte [] imageBytes = image.getBytes();
             String base64image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(imageBytes));
@@ -48,4 +55,25 @@ public class BookServiceImpl implements BookService{
     public void deleteById(Long id) {
         this.bookRepository.deleteById(id);
     }
+
+    @Override
+    public boolean existsByCategoryId(Long categoryId) {
+        return this.bookRepository.existsByCategoryId(categoryId);
+    }
+
+//    @Override
+//    public Book update(Long id, Book book, MultipartFile image) throws IOException {
+//        Book updated = this.findById(id);
+//        Category category = this.categoryService.findById(book.getCategory().getId());
+//        updated.setCategory(category);
+//        updated.setName(book.getName());
+//        updated.setSample(book.getSample());
+//        updated.setPrice(book.getPrice());
+//        if(image != null) {
+//            byte [] imageBytes = image.getBytes();
+//            String base64image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(imageBytes));
+//            updated.setBase64image(base64image);
+//        }
+//        return this.bookRepository.save(updated);
+//    }
 }

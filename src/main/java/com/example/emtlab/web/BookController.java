@@ -2,6 +2,7 @@ package com.example.emtlab.web;
 
 import com.example.emtlab.business.BookService;
 import com.example.emtlab.business.CategoryService;
+import com.example.emtlab.exceptions.BookIsAlreadyInShoppingCart;
 import com.example.emtlab.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,6 @@ public class BookController {
     public ModelAndView saveBook(@Valid Book book, BindingResult bindingResult, Model model, @RequestParam MultipartFile base64image) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("categories", categoryService.findAll());
-        int size = bookService.findAll().size();
         if (bindingResult.getAllErrors().size() > 1){
             modelAndView.addObject("errors", bindingResult.getAllErrors().subList(1, bindingResult.getAllErrors().size()));
             if(book.getId() != null)
@@ -64,7 +64,11 @@ public class BookController {
 
     @PostMapping("/{id}/delete")
     public String deleteBook(@PathVariable Long id){
-        bookService.deleteById(id);
+        try{
+            this.bookService.deleteById(id);
+        }catch (BookIsAlreadyInShoppingCart ex){
+            return String.format("redirect:/books?error=%s", ex.getMessage());
+        }
         return "redirect:/books";
     }
 

@@ -21,7 +21,7 @@ public class Book {
     @Size(min = 3, message = "Name must be > 3")
     private String name;
     @NotNull
-    @Min(value = 1, message = "Sample must be > 0")
+    @Min(value = 0, message = "Sample must be >= 0")
     private Integer sample;
     private Integer price;
     @ManyToOne

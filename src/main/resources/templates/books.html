@@ -34,9 +34,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/books">Books</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/api/cart-items">Cart <span class="sr-only">(current)</span></a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="/payments/charge">Cart <span class="sr-only">(current)</span></a>-->
+<!--                </li>-->
             </ul>
 
             <form class="form-inline my-2 my-lg-0">
@@ -49,9 +49,8 @@
                         </button>
                     </div>
                 </div>
-                <a class="btn btn-success btn-sm ml-3" href="/api/cart-items">
+                <a class="btn btn-success btn-sm ml-3" href="/payments/charge">
                     <i class="fa fa-shopping-cart"></i> Cart
-                    <span class="badge badge-light">3</span>
                 </a>
             </form>
         </div>
@@ -59,6 +58,13 @@
 </nav>
 <div class="container bg-light">
     <br>
+    <div th:if="${param.message}">
+        <h2 class="text-center text-primary" th:text="${param.message}"></h2>
+    </div>
+    <br>
+    <div th:if="${param.error}">
+        <h2 class="text-center text-danger" th:text="${param.error}"></h2>
+    </div>
     <h1 class="text-center text-success">List of all books!</h1>
     <br>
     <table class="table">
@@ -66,32 +72,44 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Samples</th>
+                <th>Available</th>
+                <th>Quantity</th>
                 <th>Category</th>
                 <th>Price</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Edit/Delete</th>
+                <th>Cart options</th>
             </tr>
         </thead>
         <tbody th:each="book : ${books}">
             <tr>
                 <td><img th:src="${book.getBase64image()}"></td>
                 <td th:text="${book.getName()}"></td>
+                <td th:text="${book.getSample() > 0} ? 'In stock': 'Out of stock'"></td>
                 <td th:text="${book.getSample()}"></td>
                 <td th:text="${book.getCategory()}  ? ${book.getCategory().getName()}: 'unknown'"></td>
                 <td th:text="${book.getPrice()}"></td>
                 <td><form th:action="@{/books/{id}/edit(id=${book.getId()})}" th:method="post">
-                        <button class="btn btn-primary">Edit</button>
+                        <button class="btn btn-warning">Edit</button>
+                    </form>
+                    <br>
+                    <form th:action="@{/books/{id}/delete(id=${book.getId()})}" th:method="delete">
+                    <button class="btn btn-danger" type="submit">Delete</button>
                     </form>
                 </td>
-                <td><form th:action="@{/books/{id}/delete(id=${book.getId()})}" th:method="delete">
-                    <button class="btn btn-danger" type="submit">Delete</button>
-                </form></td>
+                <td>
+                    <form th:action="@{/cart-items/{id}/add-item(id=${book.getId()})}" th:method="post">
+                        <button class="btn btn-success" type="submit">Add to cart</button>
+                    </form>
+                    <br>
+                    <form th:action="@{/cart-items/{id}/remove-item(id=${book.getId()})}" th:method="post">
+                        <button class="btn btn-warning" type="submit">Remove from cart</button>
+                    </form>
+                </td>
 
             </tr>
         </tbody>
     </table>
-    <a class="btn btn-warning" th:href="@{/books/new}">Add new book</a>
+    <a class="btn btn-primary" th:href="@{/books/new}">Add new book</a>
 </div>
 <br>
 <footer class="py-4 bg-dark">
