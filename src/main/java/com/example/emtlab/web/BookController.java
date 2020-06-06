@@ -5,6 +5,7 @@ import com.example.emtlab.business.CategoryService;
 import com.example.emtlab.exceptions.BookIsAlreadyInShoppingCart;
 import com.example.emtlab.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,6 +45,7 @@ public class BookController {
     }
 
     @PostMapping
+    @Secured("ROLE_ADMIN")
     public ModelAndView saveBook(@Valid Book book, BindingResult bindingResult, Model model, @RequestParam MultipartFile base64image) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("categories", categoryService.findAll());

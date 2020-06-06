@@ -36,8 +36,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
     @Override
     @Transactional
     public ShoppingCart findActiveShoppingCartByUsername(String userId) {
-        return this.shoppingCartRepository.findByUserUsernameAndStatus(userId, CartStatus.CREATED)
+        ShoppingCart shoppingCart = this.shoppingCartRepository.findByUserUsernameAndStatus(userId, CartStatus.CREATED)
                 .orElseThrow(()->new ShoppingCartIsNotActiveException(userId));
+        return shoppingCart;
     }
 
     @Override
