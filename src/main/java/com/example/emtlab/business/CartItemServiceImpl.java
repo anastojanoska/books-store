@@ -142,5 +142,15 @@ public class CartItemServiceImpl implements CartItemService{
         this.cartItemRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteByBookId(Long bookId) {
+        cartItemRepository.findAll()
+                .stream()
+                .forEach(item->{
+                    if(item.getBook().getId().equals(bookId))
+                        cartItemRepository.deleteById(item.getId());
+                });
+    }
+
 
 }

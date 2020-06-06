@@ -15,4 +15,6 @@ public interface CartItemService {
     CartItem findById(Long id);
     List<CartItem> findAllByShoppingCartId(Long shoppingCartId);
     void deleteById(Long id);
+    void deleteByBookId(Long bookId);
+
 }
