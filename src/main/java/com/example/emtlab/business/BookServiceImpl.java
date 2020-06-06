@@ -1,8 +1,11 @@
 package com.example.emtlab.business;
 
+import com.example.emtlab.exceptions.BookIsAlreadyInShoppingCart;
 import com.example.emtlab.exceptions.BookNotFoundException;
 import com.example.emtlab.model.Book;
+import com.example.emtlab.model.ShoppingCart;
 import com.example.emtlab.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,12 +17,12 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService{
 
-    private final BookRepository bookRepository;
-
-
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    @Autowired
+    private BookRepository bookRepository;
+    @Autowired
+    private ShoppingCartService shoppingCartService;
+    @Autowired
+    private AuthService authService;
 
     @Override
     public List<Book> findAllByCategoryId(Long categoryId) {
@@ -53,6 +56,12 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public void deleteById(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(()->new BookNotFoundException(id));
+        ShoppingCart shoppingCart = shoppingCartService.findActiveShoppingCartByUsername(authService.getCurrentUserId());
+        shoppingCart.getCartItems().stream().forEach(item -> {
+            if(item.getBook().getId().equals(book.getId()))
+                throw new BookIsAlreadyInShoppingCart();
+        });
         this.bookRepository.deleteById(id);
     }
 
