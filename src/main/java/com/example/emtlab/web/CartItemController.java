@@ -24,13 +24,13 @@ public class CartItemController {
         }catch (RuntimeException ex){
             return "redirect:/books?error=" + ex.getLocalizedMessage();
         }
-        return "redirect:/books";
+        return "redirect:/books?message=BookAdded";
     }
 
     @PostMapping("/{bookId}/remove-item")
     public String removeItemFromShoppingCart(@PathVariable Long bookId){
         ShoppingCart shoppingCart = this.cartItemService.removeCartItemFromShoppingCart(authService.getCurrentUserId(), bookId);
-        return "redirect:/books";
+        return "redirect:/books?message=BookRemoved";
     }
 
 

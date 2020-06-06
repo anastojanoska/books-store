@@ -65,6 +65,7 @@ public class CartItemServiceImpl implements CartItemService{
         return this.shoppingCartRepository.save(shoppingCart);
     }
 
+    @Transactional
     @Override
     public ShoppingCart removeCartItemFromShoppingCart(String userId, Long bookId) {
         ShoppingCart shoppingCart = this.getActiveShoppingCartOrCreateNew(userId);
@@ -79,14 +80,25 @@ public class CartItemServiceImpl implements CartItemService{
 //            }
 //        }
 
-        shoppingCart.setCartItems(cartItems
-                .stream()
-                .filter(item->!item.getBook().getId().equals(bookId))
-                .collect(Collectors.toList()));
+//        shoppingCart.setCartItems(cartItems
+//                .stream()
+//                .filter(item->!item.getBook().getId().equals(bookId))
+//                .collect(Collectors.toList()));
+//        shoppingCart.getCartItems().stream()
+//                .forEach(item -> {
+//                    if(item.getBook().getId().equals(bookId)){
+//                        cartItemRepository.deleteById(item.getId());
+//                    }
+//                });
+        for(CartItem item : cartItems){
+            if(item.getBook().getId().equals(bookId)){
+                cartItemRepository.deleteById(item.getId());
+                break;
+            }
+        }
 
         return this.shoppingCartRepository.save(shoppingCart);
     }
-
 
     private ShoppingCart getActiveShoppingCartOrCreateNew(String userId) {
         return this.shoppingCartRepository

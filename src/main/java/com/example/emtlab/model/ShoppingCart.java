@@ -3,6 +3,8 @@ package com.example.emtlab.model;
 import com.example.emtlab.model.enumeration.CartStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -21,13 +23,14 @@ public class ShoppingCart {
     private CartStatus status = CartStatus.CREATED;
     private LocalDateTime timeCreated = LocalDateTime.now();
     private LocalDateTime timeCanceledOrFinished;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 //    @ManyToMany
 //    @JoinTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
 //    private List<Book> books;
-
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     @OneToMany(mappedBy = "shoppingCart")
     private List<CartItem> cartItems;
