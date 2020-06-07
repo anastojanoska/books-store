@@ -1,4 +1,4 @@
-package com.example.emtlab.web;
+package com.example.emtlab.web.rest;
 
 import com.example.emtlab.business.BookService;
 import com.example.emtlab.model.Book;

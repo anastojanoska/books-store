@@ -1,5 +1,6 @@
-package com.example.emtlab.business;
+package com.example.emtlab.business.impl;
 
+import com.example.emtlab.business.UserService;
 import com.example.emtlab.exceptions.UserAlreadyExistsException;
 import com.example.emtlab.exceptions.UserNotFoundException;
 import com.example.emtlab.model.User;

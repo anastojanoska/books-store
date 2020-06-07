@@ -1,6 +1,6 @@
-package com.example.emtlab.business;
+package com.example.emtlab.business.impl;
 
-import com.example.emtlab.model.ChargeRequest;
+import com.example.emtlab.business.PaymentService;
 import com.example.emtlab.model.ChargeRequest;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;

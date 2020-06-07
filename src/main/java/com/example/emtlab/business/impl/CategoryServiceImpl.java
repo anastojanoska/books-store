@@ -1,5 +1,7 @@
-package com.example.emtlab.business;
+package com.example.emtlab.business.impl;
 
+import com.example.emtlab.business.BookService;
+import com.example.emtlab.business.CategoryService;
 import com.example.emtlab.exceptions.CategoryNotFoundException;
 import com.example.emtlab.model.Book;
 import com.example.emtlab.model.Category;
@@ -11,7 +13,7 @@ import java.util.List;
 
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
@@ -51,8 +53,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category editById(Long id, Category category) {
-        //TODO: da se proveri uste ednas
-
          Category cat = categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException(id));
          cat = category;
          categoryRepository.save(cat);

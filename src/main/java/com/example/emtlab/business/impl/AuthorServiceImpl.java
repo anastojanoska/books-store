@@ -1,5 +1,6 @@
-package com.example.emtlab.business;
+package com.example.emtlab.business.impl;
 
+import com.example.emtlab.business.AuthorService;
 import com.example.emtlab.exceptions.AuthorNotFoundException;
 import com.example.emtlab.model.Author;
 import com.example.emtlab.model.Book;

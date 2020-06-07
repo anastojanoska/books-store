@@ -1,5 +1,8 @@
-package com.example.emtlab.business;
+package com.example.emtlab.business.impl;
 
+import com.example.emtlab.business.AuthService;
+import com.example.emtlab.business.BookService;
+import com.example.emtlab.business.ShoppingCartService;
 import com.example.emtlab.exceptions.BookIsAlreadyInShoppingCart;
 import com.example.emtlab.exceptions.BookNotFoundException;
 import com.example.emtlab.model.Book;
@@ -15,7 +18,7 @@ import java.util.List;
 
 
 @Service
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     @Autowired
     private BookRepository bookRepository;
@@ -42,9 +45,6 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public void save(Book book, MultipartFile image) throws IOException {
-        //not sure if needed
-//        Category category = this.categoryService.findById(book.getCategory().getId());
-//        book.setCategory(category);
         if(image != null) {
             byte [] imageBytes = image.getBytes();
             String base64image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(imageBytes));
@@ -70,19 +70,4 @@ public class BookServiceImpl implements BookService{
         return this.bookRepository.existsByCategoryId(categoryId);
     }
 
-//    @Override
-//    public Book update(Long id, Book book, MultipartFile image) throws IOException {
-//        Book updated = this.findById(id);
-//        Category category = this.categoryService.findById(book.getCategory().getId());
-//        updated.setCategory(category);
-//        updated.setName(book.getName());
-//        updated.setSample(book.getSample());
-//        updated.setPrice(book.getPrice());
-//        if(image != null) {
-//            byte [] imageBytes = image.getBytes();
-//            String base64image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(imageBytes));
-//            updated.setBase64image(base64image);
-//        }
-//        return this.bookRepository.save(updated);
-//    }
 }

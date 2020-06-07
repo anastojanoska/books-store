@@ -1,4 +1,4 @@
-package com.example.emtlab.web;
+package com.example.emtlab.web.rest;
 
 import com.example.emtlab.business.AuthService;
 import com.example.emtlab.business.CartItemService;
@@ -7,7 +7,6 @@ import com.example.emtlab.model.ShoppingCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

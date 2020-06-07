@@ -1,5 +1,7 @@
-package com.example.emtlab.business;
+package com.example.emtlab.business.impl;
 
+import com.example.emtlab.business.AuthService;
+import com.example.emtlab.business.UserService;
 import com.example.emtlab.exceptions.PasswordDoesntMatchException;
 import com.example.emtlab.exceptions.UserNotFoundException;
 import com.example.emtlab.model.Role;
@@ -17,7 +19,7 @@ import javax.annotation.PostConstruct;
 import java.util.Collections;
 
 @Service
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private UserRepository userRepository;
@@ -41,12 +43,6 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public User getCurrentUser() {
-//        return userRepository.findById("emt-user")
-//                .orElseGet(()->{
-//                    User user = new User();
-//                    user.setUsername("emt-user");
-//                    return this.userRepository.save(user);
-//                });
         //        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();

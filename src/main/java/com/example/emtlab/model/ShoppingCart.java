@@ -27,9 +27,6 @@ public class ShoppingCart {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-//    @ManyToMany
-//    @JoinTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
-//    private List<Book> books;
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     @OneToMany(mappedBy = "shoppingCart")

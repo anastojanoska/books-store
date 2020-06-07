@@ -9,10 +9,6 @@ public class ShoppingCartIsNotActiveException extends  RuntimeException{
         super("There isn't active shopping cart, please add item to activate it");
     }
 
-//    public ShoppingCartIsNotActiveException(String userId){
-//        super(String.format("Shopping cart for user with id: %s is not active", userId));
-//    }
-
     public ShoppingCartIsNotActiveException(){
         super("Shopping cart doesn't exist");
     }

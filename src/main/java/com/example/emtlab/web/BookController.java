@@ -5,7 +5,6 @@ import com.example.emtlab.business.CartItemService;
 import com.example.emtlab.business.CategoryService;
 import com.example.emtlab.exceptions.BookIsAlreadyInShoppingCart;
 import com.example.emtlab.model.Book;
-import com.example.emtlab.model.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;

@@ -14,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private CustomUsernamePasswordAuthenticationProvider customUsernamePasswordAuthenticationProvider;
@@ -54,7 +54,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling()
-//                .accessDeniedPage("/");
                 .accessDeniedPage("/books?error=You are not authorized!");
 
     }

@@ -12,7 +12,6 @@ public interface BookService {
     List<Book> findAll();
     Book findById(Long id) throws BookNotFoundException;
     void save(Book book, MultipartFile multipartFile) throws IOException;
-//    Book update(Long id, Book book, MultipartFile image) throws IOException;
     void deleteById(Long id);
     boolean existsByCategoryId(Long categoryId);
 
