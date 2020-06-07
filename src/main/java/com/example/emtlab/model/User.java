@@ -19,13 +19,9 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    @Null
     private boolean isAccountNonExpired=true;
-    @Null
     private boolean isAccountNonLocked=true;
-    @Null
     private boolean isCredentialsNonExpired=true;
-    @Null
     private boolean isEnabled=true;
 
     @Override
