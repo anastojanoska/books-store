@@ -57,11 +57,14 @@
                 </a>
             </form>
             <ul class="navbar-nav m-auto">
-                <li class="nav-item">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" sec:authentication="name"></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login">Login</a>
                 </li>
             </ul>
         </div>
@@ -87,7 +90,7 @@
                 <th>Quantity</th>
                 <th>Category</th>
                 <th>Price</th>
-                <th>Edit/Delete</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')">Edit/Delete</th>
                 <th>Cart options</th>
             </tr>
         </thead>
@@ -99,7 +102,7 @@
                 <td th:text="${book.getSample()}"></td>
                 <td th:text="${book.getCategory()}  ? ${book.getCategory().getName()}: 'unknown'"></td>
                 <td th:text="${book.getPrice()}"></td>
-                <td><form th:action="@{/books/{id}/edit(id=${book.getId()})}" th:method="post">
+                <td sec:authorize="hasRole('ROLE_ADMIN')"><form th:action="@{/books/{id}/edit(id=${book.getId()})}" th:method="post">
                         <button class="btn btn-warning">Edit</button>
                     </form>
                     <br>
